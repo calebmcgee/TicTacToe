@@ -6,7 +6,7 @@ const Player = function(name, score, moves){
 
 let gameBoard = {
     round: 0,
-    board: [1,2,3,4,5,6,7,8,9]
+    board: [[1,2,3,4,5,6,7,8,9]]
 }
 
 let game = {
@@ -23,50 +23,76 @@ let game = {
         return [user1, user2];
     },
     playRound: function(players){
+        gameBoard.board = [1,2,3,4,5,6,7,8,9];
+        game.round += 1;
+
         let user1 = players[0];
         let user2 = players[1];
         let win = false;
         while (win === false){
             let move1 = prompt(`${user1.name}'s move`);
             user1.moves.push(parseInt(move1));
-            gameBoard.board.splice(gameBoard.board.indexOf(parseInt(move1)), 1,'x');
+            gameBoard.board.splice(gameBoard.board.indexOf(parseInt(move1)), 1,'X');
 
             console.log(user1.moves);
             console.log(gameBoard.board);
 
-            //win = checkWin(user1.moves);
-            if (user1.moves.includes(1) && user1.moves.includes(2) && user1.moves.includes(3)){
-                return true;
+            let move2 = prompt(`${user2.name}'s move`);
+            user2.moves.push(parseInt(move2));
+            gameBoard.board.splice(gameBoard.board.indexOf(parseInt(move2)), 1,'O');
+
+            if (game.checkWin(user1)){
+                user1.score += 1;
+                win = true;
+                console.log(`${user1.name} wins round`);
             }
+
+            if (game.checkWin(user2)){
+                user2.score += 1;
+                win = true;
+                console.log(`${user2.name} wins round`);
+            }
+
+
+        }
+    },
+    checkWin: function(arr){
+        console.log(arr);
+        if (arr.moves.includes(1) && arr.moves.includes(2) && arr.moves.includes(3)){
+            return true;
+        } else if (arr.moves.includes(4) && arr.moves.includes(5) && arr.moves.includes(6)){
+            return true;
+        } else if (arr.moves.includes(7) && arr.moves.includes(8) && arr.moves.includes(9)){
+            return true;
+        } else if (arr.moves.includes(1) && arr.moves.includes(4) && arr.moves.includes(7)){
+            return true;
+        } else if (arr.moves.includes(2) && arr.moves.includes(5) && arr.moves.includes(8)){
+            return true;
+        } else if (arr.moves.includes(3) && arr.moves.includes(6) && arr.moves.includes(9)){
+            return true;
+        } else if (arr.moves.includes(1) && arr.moves.includes(5) && arr.moves.includes(9)){
+            return true;
+        } else if (arr.moves.includes(3) && arr.moves.includes(5) && arr.moves.includes(7)){
+            return true;
+        } else {
+            return false;
         }
     }
 
 }
 
-game.playRound(game.createPlayers());
+
+function playGame (){
+    game.playRound(game.createPlayers());
+    
+}
+
 
 //playRound(game.createPlayers());
 
-const checkWin = () => {
-    if (arr.moves.includes(1) && arr.moves.includes(2) && arr.moves.includes(3)){
-        return true;
-    } else if (arr.moves.includes(4) && arr.moves.includes(5) && arr.moves.includes(6)){
-        return true;
-    } else if (arr.moves.includes(7) && arr.moves.includes(8) && arr.moves.includes(9)){
-        return true;
-    } else if (arr.moves.includes(1) && arr.moves.includes(4) && arr.moves.includes(7)){
-        return true;
-    } else if (arr.moves.includes(2) && arr.moves.includes(5) && arr.moves.includes(8)){
-        return true;
-    } else if (arr.moves.includes(3) && arr.moves.includes(6) && arr.moves.includes(9)){
-        return true;
-    } else if (arr.moves.includes(1) && arr.moves.includes(5) && arr.moves.includes(9)){
-        return true;
-    } else if (arr.moves.includes(3) && arr.moves.includes(5) && arr.moves.includes(7)){
-        return true;
-    } else {
-        return false;
-    }
+
+
+
 /*
 
 board
@@ -88,7 +114,4 @@ diagonal
 159
 357
 */
-
-};
-
 
