@@ -6,7 +6,12 @@ const Player = function(name, score, moves){
 
 let gameBoard = {
     round: 0,
-    board: [[1,2,3,4,5,6,7,8,9]]
+    board: [[1,2,3,4,5,6,7,8,9]],
+    render: function (){
+        this.board.forEach(element => {
+            document.createElement(button);
+        });
+    }
 }
 
 let game = {
@@ -36,16 +41,17 @@ let game = {
 
             console.log(user1.moves);
             console.log(gameBoard.board);
-
-            let move2 = prompt(`${user2.name}'s move`);
-            user2.moves.push(parseInt(move2));
-            gameBoard.board.splice(gameBoard.board.indexOf(parseInt(move2)), 1,'O');
-
+            
             if (game.checkWin(user1)){
                 user1.score += 1;
                 win = true;
                 console.log(`${user1.name} wins round`);
             }
+
+            let move2 = prompt(`${user2.name}'s move`);
+            user2.moves.push(parseInt(move2));
+            gameBoard.board.splice(gameBoard.board.indexOf(parseInt(move2)), 1,'O');
+
 
             if (game.checkWin(user2)){
                 user2.score += 1;
@@ -80,7 +86,6 @@ let game = {
     }
 
 }
-
 
 function playGame (){
     game.playRound(game.createPlayers());
