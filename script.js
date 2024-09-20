@@ -4,66 +4,68 @@ const Player = function(name, score, moves){
     this.moves = moves; 
 };
 
+const boardHTML = document.querySelector(".board");
+
 let gameBoard = {
     round: 0,
-    board: [[1,2,3,4,5,6,7,8,9]],
+    board: [1,2,3,4,5,6,7,8,9],
     render: function (){
-        this.board.forEach(element => {
-            document.createElement(button);
+        this.board.map((elem, ind) => {
+            let tile = document.createElement("button");
+            tile.classList.add(ind + 1);
+            tile.addEventListener('click', (event) =>{
+                if(game.turn === 1){
+                    game.player1move(event.target.classList);
+                    tile.textContent = 'X';
+                } else if(game.turn === 2){
+                    game.player2move(event.target.classList);
+                    tile.textContent = 'O';
+                }      
+            });
+            boardHTML.appendChild(tile);
+            
         });
     }
 }
 
 let game = {
     round: 0,
-    createPlayers: function(){ 
-        let name1 = prompt('Player 1 name');
-        let user1 = new Player(name1, 0, []);
-    
-        let name2 = prompt('Player 2 name');
-        let user2 = new Player(name2, 0, []);
-
-        console.log(user1);
-        console.log(user2);
-        return [user1, user2];
-    },
-    playRound: function(players){
-        gameBoard.board = [1,2,3,4,5,6,7,8,9];
+    turn: 0,
+    playRound: function(){
+        game.turn = 1;
+        gameBoard.render();
         game.round += 1;
 
-        let user1 = players[0];
-        let user2 = players[1];
-        let win = false;
-        while (win === false){
-            let move1 = prompt(`${user1.name}'s move`);
-            user1.moves.push(parseInt(move1));
-            gameBoard.board.splice(gameBoard.board.indexOf(parseInt(move1)), 1,'X');
+    },
+    player1move: function(x){
+        let move1 = x;
+        players[0].moves.push(parseInt(move1));
 
-            console.log(user1.moves);
-            console.log(gameBoard.board);
-            
-            if (game.checkWin(user1)){
-                user1.score += 1;
-                win = true;
-                console.log(`${user1.name} wins round`);
-            }
+        gameBoard.board.splice(gameBoard.board.indexOf(parseInt(move1)), 1,'X');
+        
+        if (game.checkWin(players[0])){
+            players[0].score += 1;
+            console.log(`${players[0].name} wins round`);
+            game.turn = 0;
+        }else {
+            game.turn = 2;
+        }
+       
+    },
+    player2move: function(x){
+        let move2 = x;
+        players[1].moves.push(parseInt(move2));
+        gameBoard.board.splice(gameBoard.board.indexOf(parseInt(move2)), 1,'O');
 
-            let move2 = prompt(`${user2.name}'s move`);
-            user2.moves.push(parseInt(move2));
-            gameBoard.board.splice(gameBoard.board.indexOf(parseInt(move2)), 1,'O');
-
-
-            if (game.checkWin(user2)){
-                user2.score += 1;
-                win = true;
-                console.log(`${user2.name} wins round`);
-            }
-
-
+        if (game.checkWin(players[1])){
+            players[1].score += 1;
+            console.log(`${players[1].name} wins round`);
+            game.turn = 0;
+        } else {
+            game.turn = 1;
         }
     },
     checkWin: function(arr){
-        console.log(arr);
         if (arr.moves.includes(1) && arr.moves.includes(2) && arr.moves.includes(3)){
             return true;
         } else if (arr.moves.includes(4) && arr.moves.includes(5) && arr.moves.includes(6)){
@@ -87,10 +89,37 @@ let game = {
 
 }
 
-function playGame (){
-    game.playRound(game.createPlayers());
-    
-}
+
+let players = [];
+function createPlayers(p1, p2){
+    let player1 = new Player (p1, 0, [])
+    let player2 = new Player (p2, 0, [])
+    return [player1, player2];
+};
+
+const p1html = document.querySelector('.p1');
+const p2html = document.querySelector('.p2');
+function playGame (form){
+    players = createPlayers(form.player1.value, form.player2.value);
+    game.playRound();
+    p1html.textContent = players[0].name;
+    p2html.textContent = players[1].name;
+};
+
+
+
+const modal = document.querySelector(".modal");
+
+const playBtn = document.querySelector(".play");
+
+playBtn.addEventListener("click", (event) => {
+    modal.showModal();
+});
+const submitButton = document.querySelector('#submit');
+submitButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  modal.close();
+});
 
 
 //playRound(game.createPlayers());

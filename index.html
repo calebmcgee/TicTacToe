@@ -5,22 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TicTacToe</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
+    <div class="header">
+        <h1>TicTacToe</h1>
+    </div>
     <div>
-        <button onclick="playGame()">Play Game</button>
+        <button class="play">Play Game</button>
     </div>
-    <div class="board">
-        <button id="1">1</button>
-        <button id="2">2</button>
-        <button id="3">3</button>
-        <button id="4">4</button>
-        <button id="5">5</button>
-        <button id="6">6</button>
-        <button id="7">7</button>
-        <button id="8">8</button>
-        <button id="9">9</button>
+    <dialog class="modal">
+        <form>
+            <label for="player1"> Player 1
+                <input type="text" id="player1" name="player1" placeholder="name">
+            </label>
+            <label for="player2"> Player 2
+                <input type="text" name="player2" id="player2" placeholder="name">
+            </label>
+            <button id="submit" name="submit" type="submit" onclick="playGame(this.form)">Start</button>
+        </form>
+    </dialog>
+    
+    <div class="gameBoard">
+        <div class="players">
+        </div>
+        <div class="board">
+        </div>
     </div>
+
 </body>
 </html>
