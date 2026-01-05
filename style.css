@@ -66,9 +66,12 @@ label {
     width: 400px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 
 }
 
-.board-button{
-    font-size: 20px;
+[id^=cell]{
+    background-color: white;
+    font-size: 40px;
+
 }
