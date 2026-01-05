@@ -10,59 +10,73 @@
         board : [0,1,2,3,4,5,6,7,8],
         turn : 0,
         movesDone : [],
+        gameLive : false,
         changeTurn : function(){
-            if(turn == "x"){
-                turn = "o";
-            } else if (turn == "o"){
-                turn = "x";
-            } else if (turn == 0){
-                turn = "x";
+            if(this.turn == "x"){
+                this.turn = "o";
+            } else if (this.turn == "o"){
+                this.turn = "x";
+            } else if (this.turn == 0){
+                this.turn = "x";
             }
         }, 
-        render : function(){      
-            this.board.forEach(cell=> {
-                let tile = document.createElement("button");
-                tile.classList.add("board-button");
-                tile.textContent = typeof cell == String ? cell : "";
-                boardHTML.appendChild(tile);
-            });
+        render : function(){ 
+            boardHTML.innerHTML = "";
+            //create board cells
+            this.board.map((cellContent, cellInd) => {
+                let cell = document.createElement("button");
+                cell.id = ("cell-" + cellInd);
+                if(typeof cellContent == "string"){
+                    cell.textContent = cellContent;
+                } else {
+                    cell.textContent = "";
+                    this.assignEvent(cell);
+                }
+                boardHTML.appendChild(cell);
+                
 
-            this.assignEvent(boardHTML);
+            });
+        },
+        reset : function(){
+            this.turn = 0;
+            this.board = [0,1,2,3,4,5,6,7,8];
+            this.movesDone = [];
+            this.gameLive = true;
         },
         checkWin : function(){
             //Check "x"
-            if (movesDone[0] == "x" && movesDone[1] == "x" && movesDone[2] == "x"){
+            if (this.movesDone[0] == "x" && this.movesDone[1] == "x" && this.movesDone[2] == "x"){
                 return true;
-            } else if (movesDone[3] == "x" && movesDone[4] == "x" && movesDone[5] == "x"){
+            } else if (this.movesDone[3] == "x" && this.movesDone[4] == "x" && this.movesDone[5] == "x"){
                 return true;
-            } else if (movesDone[6] == "x" && movesDone[7] == "x" && movesDone[8] == "x"){
+            } else if (this.movesDone[6] == "x" && this.movesDone[7] == "x" && this.movesDone[8] == "x"){
                 return true;
-            } else if (movesDone[0] == "x" && movesDone[3] == "x" && movesDone[6] == "x"){
+            } else if (this.movesDone[0] == "x" && this.movesDone[3] == "x" && this.movesDone[6] == "x"){
                 return true;
-            } else if (movesDone[1] == "x" && movesDone[4] == "x" && movesDone[7] == "x"){
+            } else if (this.movesDone[1] == "x" && this.movesDone[4] == "x" && this.movesDone[7] == "x"){
                 return true;
-            } else if (movesDone[2] == "x" && movesDone[5] == "x" && movesDone[8] == "x"){
+            } else if (this.movesDone[2] == "x" && this.movesDone[5] == "x" && this.movesDone[8] == "x"){
                 return true;
-            } else if (movesDone[0] == "x" && movesDone[4] == "x" && movesDone[8] == "x"){
+            } else if (this.movesDone[0] == "x" && this.movesDone[4] == "x" && this.movesDone[8] == "x"){
                 return true;
-            } else if (movesDone[2] == "x" && movesDone[4] == "x" && movesDone[6] == "x"){
+            } else if (this.movesDone[2] == "x" && this.movesDone[4] == "x" && this.movesDone[6] == "x"){
                 return true;
             }  //Check "o"
-            else if (movesDone[0] == "o" && movesDone[1] == "o" && movesDone[2] == "o"){
+            else if (this.movesDone[0] == "o" && this.movesDone[1] == "o" && this.movesDone[2] == "o"){
                 return true;
-            } else if (movesDone[3] == "o" && movesDone[4] == "o" && movesDone[5] == "o"){
+            } else if (this.movesDone[3] == "o" && this.movesDone[4] == "o" && this.movesDone[5] == "o"){
                 return true;
-            } else if (movesDone[6] == "o" && movesDone[7] == "o" && movesDone[8] == "o"){
+            } else if (this.movesDone[6] == "o" && this.movesDone[7] == "o" && this.movesDone[8] == "o"){
                 return true;
-            } else if (movesDone[0] == "o" && movesDone[3] == "o" && movesDone[6] == "o"){
+            } else if (this.movesDone[0] == "o" && this.movesDone[3] == "o" && this.movesDone[6] == "o"){
                 return true;
-            } else if (movesDone[1] == "o" && movesDone[4] == "o" && movesDone[7] == "o"){
+            } else if (this.movesDone[1] == "o" && this.movesDone[4] == "o" && this.movesDone[7] == "o"){
                 return true;
-            } else if (movesDone[2] == "o" && movesDone[5] == "o" && movesDone[8] == "o"){
+            } else if (this.movesDone[2] == "o" && this.movesDone[5] == "o" && this.movesDone[8] == "o"){
                 return true;
-            } else if (movesDone[0] == "o" && movesDone[4] == "o" && movesDone[8] == "o"){
+            } else if (this.movesDone[0] == "o" && this.movesDone[4] == "o" && this.movesDone[8] == "o"){
                 return true;
-            } else if (movesDone[2] == "o" && movesDone[4] == "o" && movesDone[6] == "o"){
+            } else if (this.movesDone[2] == "o" && this.movesDone[4] == "o" && this.movesDone[6] == "o"){
                 return true;
             }
             //No winner
@@ -70,21 +84,22 @@
                 return false;
             }
         }, 
-        assignEvent : function(e){
-            console.log(e);
+        assignEvent : function(cell){
+            cell.addEventListener("click", (e) => {
+                this.changeTurn();
+                this.changeCell(e.target.id.split("cell-")[1]);
+            });
         },
-        playMove : function(){
-            console.log("run");
-            //board[cell] = symbol;
-
+        changeCell : function(currentCell){
+            this.board[currentCell] = this.turn;
+            this.render();
+           
         },
         play : function(){
-            console.log("Game Start");
+            this.reset();
             this.render();
         },
     }
-
-
 
 })();
 
