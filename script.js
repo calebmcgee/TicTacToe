@@ -1,30 +1,26 @@
 (function (){
+    //DOM
     const boardHTML = document.querySelector(".board");
     const statusBar = document.querySelector(".statusBar");
     const playBTN = document.querySelector(".play");
     const sumbitBTN = document.querySelector("#submit");
     const playerModal = document.querySelector(".modal");
-    const p1name = document.querySelector("#player1");
-    const p2name = document.querySelector("#player2");
+    const p1Input = document.querySelector("#player1");
+    const p2Input = document.querySelector("#player2");
 
-
+    //Buttons
     playBTN.addEventListener("click", (event)=>{
         playerModal.show();
     });
 
     sumbitBTN.addEventListener("click", (event)=>{
-        //game.setPlayers(p1name.value, p2name.value);
-        game.startGame();
+        game.setPlayers(p1Input.value, p2Input.value);
         playerModal.close();
         event.preventDefault();
 
     });
 
-
-    // link assignPLayers
-
-
-
+    //Game
     const game = {
         players:[{name: "tom",sign: "x"},{name:"jerry", sign: "o"}],
         board : [0,1,2,3,4,5,6,7,8],
@@ -39,16 +35,9 @@
             }
             this.render();
         }, 
-        createPlayer : function(name,sign){
-            name = name;
-            sign = sign;
-
-            return {name, sign}
-        },
         setPlayers : function(p1,p2){
-            this.players[0] = this.createPlayer(p1,"x");
-            this.players[1] = this.createPlayer(p2,"o");
-
+            this.players[0].name = p1;
+            this.players[1].name = p2;
             this.startGame();
 
         },
@@ -104,7 +93,7 @@
                 return (this.players[1].name + " Wins !");
                 
             } else {
-                return (this.players[this.turn].name + "'s Turn");
+                return (this.players[this.turn].name + "'s Turn (" + this.players[this.turn].sign + ")");
             }
 
 
