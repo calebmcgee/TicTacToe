@@ -3,7 +3,7 @@
     const boardHTML = document.querySelector(".board");
     const statusBar = document.querySelector(".statusBar");
     const playBTN = document.querySelector(".play");
-    const sumbitBTN = document.querySelector("#submit");
+    const submitBTN = document.querySelector("#submit");
     const playerModal = document.querySelector(".modal");
     const p1Input = document.querySelector("#player1");
     const p2Input = document.querySelector("#player2");
@@ -13,7 +13,7 @@
         playerModal.show();
     });
 
-    sumbitBTN.addEventListener("click", (event)=>{
+    submitBTN.addEventListener("click", (event)=>{
         game.setPlayers(p1Input.value, p2Input.value);
         playerModal.close();
         event.preventDefault();
@@ -27,19 +27,23 @@
         turn : 0,
         movesDone : [],
         gameLive : false,
-        changeTurn : function(){
-            if(this.turn == "0"){
-                this.turn = "1";
-            } else if (this.turn == "1"){
-                this.turn = "0";
-            }
-            this.render();
-        }, 
         setPlayers : function(p1,p2){
             this.players[0].name = p1;
             this.players[1].name = p2;
             this.startGame();
-
+        },
+        startGame : function(){
+            this.resetGame();
+            this.render();
+        },
+        endGame : function(){
+            this.gameLive = false;
+        },
+        resetGame : function(){
+            this.board = [0,1,2,3,4,5,6,7,8];
+            this.turn = "0";
+            this.movesDone = [];
+            this.gameLive = true;
         },
         render : function(){
             //Render Status
@@ -95,10 +99,6 @@
             } else {
                 return (this.players[this.turn].name + "'s Turn (" + this.players[this.turn].sign + ")");
             }
-
-
-
-            
         }, 
         assignEvent : function(cell){
             cell.addEventListener("click", (e) => {
@@ -109,22 +109,15 @@
             this.board[currentCell] = this.players[this.turn].sign;
             this.changeTurn();
         },
-        startGame : function(){
-            this.resetGame();
+        changeTurn : function(){
+            if(this.turn == "0"){
+                this.turn = "1";
+            } else if (this.turn == "1"){
+                this.turn = "0";
+            }
             this.render();
-        },
-        endGame : function(){
-            this.gameLive = false;
-        },
-        resetGame : function(){
-            this.board = [0,1,2,3,4,5,6,7,8];
-            this.turn = "0";
-            this.movesDone = [];
-            this.gameLive = true;
-        },
-        
+        }, 
     }
-
 })();
 
 /*
