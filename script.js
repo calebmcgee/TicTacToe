@@ -3,38 +3,58 @@
     const statusBar = document.querySelector(".statusBar");
     const playBTN = document.querySelector(".play");
     const sumbitBTN = document.querySelector("#submit");
+    const playerModal = document.querySelector(".modal");
+    const p1name = document.querySelector("#player1");
+    const p2name = document.querySelector("#player2");
+
 
     playBTN.addEventListener("click", (event)=>{
-        game.startGame();
+        playerModal.show();
     });
 
     sumbitBTN.addEventListener("click", (event)=>{
-       game.setPlayers();
+        //game.setPlayers(p1name.value, p2name.value);
+        game.startGame();
+        playerModal.close();
+        event.preventDefault();
+
     });
+
+
     // link assignPLayers
 
 
 
     const game = {
+        players:[{name: "tom",sign: "x"},{name:"tom", sign: "o"}],
         board : [0,1,2,3,4,5,6,7,8],
-        turn : "x",
+        turn : 0,
         movesDone : [],
         gameLive : false,
         setTurn : function(){
-            if(this.turn == "x"){
-                this.turn = "o";
-            } else if (this.turn == "o"){
-                this.turn = "x";
+            if(this.turn == "0"){
+                this.turn = "1";
+            } else if (this.turn == "1"){
+                this.turn = "0";
             }
             this.render();
         }, 
+        createPlayer : function(name,sign){
+            name = name;
+            sign = sign;
+
+            return {name, sign}
+        },
         setPlayers : function(p1,p2){
-            this.p1 = p1;
-            this.p2 = p2;
-            return {p1,p2}
+            this.players[0] = this.createPlayer(p1,"x");
+            this.players[1] = this.createPlayer(p2,"o");
+
+            this.startGame();
+
         },
         render : function(){
             //Clear board
+
             boardHTML.innerHTML = "";
             //Render Board
             this.board.map((cellContent, cellInd) => {
@@ -45,7 +65,7 @@
                 } else {
                     cell.textContent = "";
                     if(this.gameLive){
-                        this.assignEvent(cell);
+                        this.assignEvent(this.board[e.target.id.split("cell-")[1]]);
                     }
                 }
                 boardHTML.appendChild(cell);
@@ -55,70 +75,65 @@
             });
         },
         renderStatus : function (){
-            statusBar.textContent = this.getStatus();
-        },
-        endGame : function(){
-            this.gameLive = false;
+            console.log(getStatus());
+            //statusBar.textContent = this.getStatus();
         },
         getStatus : function(){
             //Check "x"
+            console.log(this.players);
             if (this.board[0] == "x" && this.board[1] == "x" && this.board[2] == "x"){
                 this.endGame();
-                return "Player 1 Wins !";
+                //return (this.players[0].name + " Wins !");
             } else if (this.board[3] == "x" && this.board[4] == "x" && this.board[5] == "x"){
                 this.endGame();
-                return "Player 1 Wins !";
+                //return (this.players[0].name + " Wins !");
             } else if (this.board[6] == "x" && this.board[7] == "x" && this.board[8] == "x"){
                 this.endGame();
-                return "Player 1 Wins !";
+                //return (this.players[0].name + " Wins !");
             } else if (this.board[0] == "x" && this.board[3] == "x" && this.board[6] == "x"){
                 this.endGame();
-                return "Player 1 Wins !";
+                //return (this.players[0].name + " Wins !");
             } else if (this.board[1] == "x" && this.board[4] == "x" && this.board[7] == "x"){
                 this.endGame();
-                return "Player 1 Wins !";
+                //return (this.players[0].name + " Wins !");
             } else if (this.board[2] == "x" && this.board[5] == "x" && this.board[8] == "x"){
                 this.endGame();
-                return "Player 1 Wins !";
+                //return (this.players[0].name + " Wins !");
             } else if (this.board[0] == "x" && this.board[4] == "x" && this.board[8] == "x"){
                 this.endGame();
-                return "Player 1 Wins !";
+                //return (this.players[0].name + " Wins !");
             } else if (this.board[2] == "x" && this.board[4] == "x" && this.board[6] == "x"){
                 this.endGame();
-                return "Player 1 Wins !";
-            }  //Check "o"
-            else if (this.board[0] == "o" && this.board[1] == "o" && this.board[2] == "o"){
+                //return (this.players[0].name + " Wins !");
+            } else if (this.board[0] == "o" && this.board[1] == "o" && this.board[2] == "o"){
                 this.endGame();
-                return "Player 2 Wins !";
+                //return this.players[1].name + " Wins !";
             } else if (this.board[3] == "o" && this.board[4] == "o" && this.board[5] == "o"){
                 this.endGame();
-                return "Player 2 Wins !";
+                //return this.players[1].name + " Wins !";
             } else if (this.board[6] == "o" && this.board[7] == "o" && this.board[8] == "o"){
                 this.endGame();
-                return "Player 2 Wins !";
+                //return this.players[1].name + " Wins !";
             } else if (this.board[0] == "o" && this.board[3] == "o" && this.board[6] == "o"){
                 this.endGame();
-                return "Player 2 Wins !";
+                //return this.players[1].name + " Wins !";
             } else if (this.board[1] == "o" && this.board[4] == "o" && this.board[7] == "o"){
                 this.endGame();
-                return "Player 2 Wins !";
+                //return this.players[1].name + " Wins !";
             } else if (this.board[2] == "o" && this.board[5] == "o" && this.board[8] == "o"){
                 this.endGame();
-                return "Player 2 Wins !";
+                //return this.players[1].name + " Wins !";
             } else if (this.board[0] == "o" && this.board[4] == "o" && this.board[8] == "o"){
                 this.endGame();
-                return "Player 2 Wins !";
+                //return this.players[1].name + " Wins !";
             } else if (this.board[2] == "o" && this.board[4] == "o" && this.board[6] == "o"){
                 this.endGame();
-                return "Player 2 Wins !";
+                //return this.players[1].name + " Wins !";
             } else if (this.board.every(isNaN)){
                 this.endGame();
-                return "Draw !";
-            }
-            //No winner
-            else {
-                console.log(this.board);
-                return "It is " + this.turn + "'s turn.";
+                //return "Draw !";
+            } else {
+                //return "It is " + players[this.turn].name + "'s turn.";
             }
         }, 
         assignEvent : function(cell){
@@ -127,18 +142,20 @@
             });
         },
         clickCell : function(currentCell){
-            this.board[currentCell] = this.turn;
+            this.board[currentCell] = this.players[this.turn].sign;
             this.setTurn();
             this.render();
         },
         startGame : function(){
-            this.endGame();
             this.resetGame();
             this.render();
         },
+        endGame : function(){
+            this.gameLive = false;
+        },
         resetGame : function(){
             this.board = [0,1,2,3,4,5,6,7,8];
-            this.turn = "x";
+            this.turn = "0";
             this.movesDone = [];
             this.gameLive = true;
         },
@@ -148,11 +165,7 @@
 })();
 
 /*
-
-board
-012
-345
-678
+Game End Conditions
 
 horizontal
 012
