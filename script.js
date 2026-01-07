@@ -26,12 +26,12 @@
 
 
     const game = {
-        players:[{name: "tom",sign: "x"},{name:"tom", sign: "o"}],
+        players:[{name: "tom",sign: "x"},{name:"jerry", sign: "o"}],
         board : [0,1,2,3,4,5,6,7,8],
         turn : 0,
         movesDone : [],
         gameLive : false,
-        setTurn : function(){
+        changeTurn : function(){
             if(this.turn == "0"){
                 this.turn = "1";
             } else if (this.turn == "1"){
@@ -53,8 +53,9 @@
 
         },
         render : function(){
+            //Render Status
+            this.renderStatus();
             //Clear board
-
             boardHTML.innerHTML = "";
             //Render Board
             this.board.map((cellContent, cellInd) => {
@@ -65,76 +66,50 @@
                 } else {
                     cell.textContent = "";
                     if(this.gameLive){
-                        this.assignEvent(this.board[e.target.id.split("cell-")[1]]);
+                        this.assignEvent(cell);
                     }
                 }
                 boardHTML.appendChild(cell);
-
-                //Render Status Bar
-                this.renderStatus();
             });
+
         },
         renderStatus : function (){
-            console.log(getStatus());
-            //statusBar.textContent = this.getStatus();
+            statusBar.textContent = this.getStatus();
         },
         getStatus : function(){
+            
             //Check "x"
-            console.log(this.players);
-            if (this.board[0] == "x" && this.board[1] == "x" && this.board[2] == "x"){
+            if (this.board[0] == "x" && this.board[1] == "x" && this.board[2] == "x" ||
+                this.board[3] == "x" && this.board[4] == "x" && this.board[5] == "x" ||
+                this.board[6] == "x" && this.board[7] == "x" && this.board[8] == "x" ||
+                this.board[0] == "x" && this.board[3] == "x" && this.board[6] == "x" ||
+                this.board[1] == "x" && this.board[4] == "x" && this.board[7] == "x" ||
+                this.board[2] == "x" && this.board[5] == "x" && this.board[8] == "x" ||
+                this.board[0] == "x" && this.board[4] == "x" && this.board[8] == "x" ||
+                this.board[2] == "x" && this.board[4] == "x" && this.board[6] == "x"){
+
                 this.endGame();
-                //return (this.players[0].name + " Wins !");
-            } else if (this.board[3] == "x" && this.board[4] == "x" && this.board[5] == "x"){
+                return (this.players[0].name + " Wins !");
+                
+            } else if (this.board[0] == "o" && this.board[1] == "o" && this.board[2] == "o" ||
+                this.board[3] == "o" && this.board[4] == "o" && this.board[5] == "o" ||
+                this.board[6] == "o" && this.board[7] == "o" && this.board[8] == "o" ||
+                this.board[0] == "o" && this.board[3] == "o" && this.board[6] == "o" ||
+                this.board[1] == "o" && this.board[4] == "o" && this.board[7] == "o" ||
+                this.board[2] == "o" && this.board[5] == "o" && this.board[8] == "o" ||
+                this.board[0] == "o" && this.board[4] == "o" && this.board[8] == "o" ||
+                this.board[2] == "o" && this.board[4] == "o" && this.board[6] == "o"){
+
                 this.endGame();
-                //return (this.players[0].name + " Wins !");
-            } else if (this.board[6] == "x" && this.board[7] == "x" && this.board[8] == "x"){
-                this.endGame();
-                //return (this.players[0].name + " Wins !");
-            } else if (this.board[0] == "x" && this.board[3] == "x" && this.board[6] == "x"){
-                this.endGame();
-                //return (this.players[0].name + " Wins !");
-            } else if (this.board[1] == "x" && this.board[4] == "x" && this.board[7] == "x"){
-                this.endGame();
-                //return (this.players[0].name + " Wins !");
-            } else if (this.board[2] == "x" && this.board[5] == "x" && this.board[8] == "x"){
-                this.endGame();
-                //return (this.players[0].name + " Wins !");
-            } else if (this.board[0] == "x" && this.board[4] == "x" && this.board[8] == "x"){
-                this.endGame();
-                //return (this.players[0].name + " Wins !");
-            } else if (this.board[2] == "x" && this.board[4] == "x" && this.board[6] == "x"){
-                this.endGame();
-                //return (this.players[0].name + " Wins !");
-            } else if (this.board[0] == "o" && this.board[1] == "o" && this.board[2] == "o"){
-                this.endGame();
-                //return this.players[1].name + " Wins !";
-            } else if (this.board[3] == "o" && this.board[4] == "o" && this.board[5] == "o"){
-                this.endGame();
-                //return this.players[1].name + " Wins !";
-            } else if (this.board[6] == "o" && this.board[7] == "o" && this.board[8] == "o"){
-                this.endGame();
-                //return this.players[1].name + " Wins !";
-            } else if (this.board[0] == "o" && this.board[3] == "o" && this.board[6] == "o"){
-                this.endGame();
-                //return this.players[1].name + " Wins !";
-            } else if (this.board[1] == "o" && this.board[4] == "o" && this.board[7] == "o"){
-                this.endGame();
-                //return this.players[1].name + " Wins !";
-            } else if (this.board[2] == "o" && this.board[5] == "o" && this.board[8] == "o"){
-                this.endGame();
-                //return this.players[1].name + " Wins !";
-            } else if (this.board[0] == "o" && this.board[4] == "o" && this.board[8] == "o"){
-                this.endGame();
-                //return this.players[1].name + " Wins !";
-            } else if (this.board[2] == "o" && this.board[4] == "o" && this.board[6] == "o"){
-                this.endGame();
-                //return this.players[1].name + " Wins !";
-            } else if (this.board.every(isNaN)){
-                this.endGame();
-                //return "Draw !";
+                return (this.players[1].name + " Wins !");
+                
             } else {
-                //return "It is " + players[this.turn].name + "'s turn.";
+                return (this.players[this.turn].name + "'s Turn");
             }
+
+
+
+            
         }, 
         assignEvent : function(cell){
             cell.addEventListener("click", (e) => {
@@ -143,8 +118,7 @@
         },
         clickCell : function(currentCell){
             this.board[currentCell] = this.players[this.turn].sign;
-            this.setTurn();
-            this.render();
+            this.changeTurn();
         },
         startGame : function(){
             this.resetGame();
