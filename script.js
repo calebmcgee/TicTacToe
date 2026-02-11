@@ -14,7 +14,9 @@
     });
 
     submitBTN.addEventListener("click", (event)=>{
-        game.setPlayers(p1Input.value, p2Input.value);
+        const player1name = " " ? "Player 1": p1Input.value;
+        const player2name = " " ? "Player 2" : p2Input.value;
+        game.setPlayers(player1name, player2name);
         playerModal.close();
         event.preventDefault();
 
@@ -25,7 +27,7 @@
         players:[{name: "tom",sign: "x"},{name:"jerry", sign: "o"}],
         board : [0,1,2,3,4,5,6,7,8],
         turn : 0,
-        movesDone : [],
+        moveCount : 0,
         gameLive : false,
         setPlayers : function(p1,p2){
             this.players[0].name = p1;
@@ -42,7 +44,7 @@
         resetGame : function(){
             this.board = [0,1,2,3,4,5,6,7,8];
             this.turn = "0";
-            this.movesDone = [];
+            this.moveCount = 0;
             this.gameLive = true;
         },
         render : function(){
@@ -70,9 +72,11 @@
             statusBar.textContent = this.getStatus();
         },
         getStatus : function(){
-            
-            //Check "x"
-            if (this.board[0] == "x" && this.board[1] == "x" && this.board[2] == "x" ||
+
+            if(this.moveCount == 9){
+                this.endGame();
+                return (" Draw !");
+            } else if (this.board[0] == "x" && this.board[1] == "x" && this.board[2] == "x" ||
                 this.board[3] == "x" && this.board[4] == "x" && this.board[5] == "x" ||
                 this.board[6] == "x" && this.board[7] == "x" && this.board[8] == "x" ||
                 this.board[0] == "x" && this.board[3] == "x" && this.board[6] == "x" ||
@@ -80,7 +84,6 @@
                 this.board[2] == "x" && this.board[5] == "x" && this.board[8] == "x" ||
                 this.board[0] == "x" && this.board[4] == "x" && this.board[8] == "x" ||
                 this.board[2] == "x" && this.board[4] == "x" && this.board[6] == "x"){
-
                 this.endGame();
                 return (this.players[0].name + " Wins !");
                 
@@ -107,6 +110,8 @@
         },
         clickCell : function(currentCell){
             this.board[currentCell] = this.players[this.turn].sign;
+            this.moveCount++;
+            console.log(this.moveCount);
             this.changeTurn();
         },
         changeTurn : function(){

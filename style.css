@@ -89,3 +89,7 @@ label {
 #cell-0, #cell-1, #cell-3, #cell-4, #cell-6, #cell-7{
     border-right:2px solid black;
 }
+
+.playerInput {
+    padding: 5px;
+}
